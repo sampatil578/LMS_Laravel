@@ -28,6 +28,9 @@ class StudentAuth
         if($request->path()=="addadmin" && !$request->session()->has('admin')){
             return redirect("/");
         }
+        if($request->path()=="students" && !$request->session()->has('admin')){
+            return redirect("/");
+        }
         return $next($request);
     }
 }

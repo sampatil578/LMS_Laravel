@@ -40,4 +40,9 @@ class StudentController extends Controller
         $student->save();
         return redirect('student_login');
     }
+
+    function students(){
+        $data = Student::select("*")->get();
+        return view('students',['student'=>$data]);
+    }
 }
