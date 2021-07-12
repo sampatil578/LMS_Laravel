@@ -3,7 +3,7 @@
 <div class="container custom-signup">
     <div class="row">
         <div class="col-sm-4 col-sm-offset-4">
-        <form action="student_signup" method="POST">
+        <form action="addadmin" method="POST">
         @csrf
             <div class="form-group">
                 <label for="name">Name</label>
@@ -11,9 +11,9 @@
                 <input type="text" name="name" class="form-control"  placeholder="Enter Name" value="">
             </div>
             <div class="form-group">
-                <label for="adm_no">Admission No.</label>
-                <span style="color:red"><br>@error('adm_no'){{$message}}@enderror</span>
-                <input type="text" name="adm_no" class="form-control"  placeholder="Enter Adm No." value="">
+                <label for="username">Username</label>
+                <span style="color:red"><br>@error('username'){{$message}}@enderror</span>
+                <input type="text" name="username" class="form-control"  placeholder="Enter Username" value="">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
@@ -30,7 +30,7 @@
                 <span style="color:red"><br>@error('email'){{$message}}@enderror</span>
                 <input type="email" name="email" class="form-control"  placeholder="Enter Email" value="">
             </div>
-            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <button type="submit" class="btn btn-primary">Add Admin</button>
         </form>
         </div>
     </div>

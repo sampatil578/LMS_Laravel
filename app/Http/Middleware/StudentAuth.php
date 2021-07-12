@@ -16,10 +16,16 @@ class StudentAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->path()=="student_login" && $request->session()->has('student')){
+        if($request->path()=="student_login" && ($request->session()->has('student')||$request->session()->has('admin'))){
             return redirect("/");
         }
         if($request->path()=="student_signup" && $request->session()->has('student')){
+            return redirect("/");
+        }
+        if($request->path()=="admin_login" && ($request->session()->has('student')||$request->session()->has('admin'))){
+            return redirect("/");
+        }
+        if($request->path()=="addadmin" && !$request->session()->has('admin')){
             return redirect("/");
         }
         return $next($request);

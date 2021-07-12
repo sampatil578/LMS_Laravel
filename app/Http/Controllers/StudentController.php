@@ -27,7 +27,7 @@ class StudentController extends Controller
             'name' => 'required',
             'adm_no'=>'required',
             'password'=>'required|min:8',
-            'cpassword'=>'required_with:password|same:password|min:8',
+            'cpassword'=>'required_with:password|same:password',
             'email' => 'required',
         ]);
         $student = new student;

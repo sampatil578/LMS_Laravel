@@ -17,10 +17,20 @@
       @if(@session()->has('student'))
         <li><a href="/books">Books</a></li>
         <li><a href="/mybooks">My Books</a></li>
-        <li><a href="/Profile">Profile</a></li>
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/logout">logout</a></li>
+      @elseif(@session()->has('admin'))
+        <li><a href="/books">Books</a></li>
+        <li><a href="/students">Students</a></li>
+        <li><a href="/addbooks">Add Books</a></li>
+        <li><a href="/bookrequests">Book Requests</a></li>
+        <li><a href="/bbooks">Borrowed Books</a></li>
+        <li><a href="/addadmin">Add Admin</a></li>
         <li><a href="/logout">logout</a></li>
       @else
-        <li><a href="/student_login">login</a></li>
+        <li><a href="/books">Books</a></li>
+        <li><a href="/student_login">Student login</a></li>
+        <li><a href="/admin_login">Admin login</a></li>
         <li><a href="/student_signup">signup</a></li>
       @endif
       </ul>

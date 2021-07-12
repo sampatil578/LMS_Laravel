@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,13 +17,23 @@ use App\Http\Controllers\StudentController;
 
 Route::view("/student_signup","student_signup");
 Route::view("/student_login","student_login");
+Route::view("/admin_login","admin_login");
+Route::view("/addadmin","addadmin");
 Route::view("/","home");
 
 
 Route::post("/student_signup",[StudentController::class,'signup']);
 Route::post("/student_login",[StudentController::class,'login']);
+Route::post("/admin_login",[AdminController::class,'login']);
+Route::post("/addadmin",[AdminController::class,'signup']);
 
 Route::get("/logout",function(){
-    Session::forget('student');
-    return redirect('student_login');
+    if(session('student')){
+        Session::forget('student');
+        return redirect('student_login');
+    }
+    if(session('admin')){
+        Session::forget('admin');
+        return redirect('admin_login');
+    }
 });
