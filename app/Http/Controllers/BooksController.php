@@ -32,4 +32,9 @@ class BooksController extends Controller
         $book->save();
         return redirect('books');
     }
+
+    function books(){
+        $data = Book::select("*")->get();
+        return view('books',['book'=>$data]);
+    }
 }

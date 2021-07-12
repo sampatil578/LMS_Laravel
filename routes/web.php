@@ -30,6 +30,7 @@ Route::get("/students",[StudentController::class,'students']);
 Route::post("/admin_login",[AdminController::class,'login']);
 Route::post("/addadmin",[AdminController::class,'signup']);
 Route::post("/addbooks",[BooksController::class,'addbook']);
+Route::get("/books",[BooksController::class,'books']);
 
 Route::get("/logout",function(){
     if(session('student')){
