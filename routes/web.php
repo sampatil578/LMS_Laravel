@@ -27,11 +27,14 @@ Route::view("/","home");
 Route::post("/student_signup",[StudentController::class,'signup']);
 Route::post("/student_login",[StudentController::class,'login']);
 Route::get("/students",[StudentController::class,'students']);
+Route::get("/bookrequests",[BooksController::class,'requests']);
 Route::post("/admin_login",[AdminController::class,'login']);
 Route::post("/addadmin",[AdminController::class,'signup']);
 Route::post("/addbooks",[BooksController::class,'addbook']);
 Route::get("/books",[BooksController::class,'books']);
 Route::get("/requestbooks/{bid}",[BooksController::class,'requestbooks']);
+Route::get("/approverequests/{bid}_{adm}",[BooksController::class,'approve']);
+Route::get("/declinerequests/{bid}_{adm}",[BooksController::class,'decline']);
 
 Route::get("/logout",function(){
     if(session('student')){

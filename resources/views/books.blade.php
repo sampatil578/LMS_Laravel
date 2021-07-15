@@ -22,8 +22,10 @@
                             <td>{{$data['quantity']}}</td>
                             <td>
                                 @if(session('student'))
-                                    @if(($student['adm_no']==session('student'))&&($data['status']=='requested'))
+                                    @if(($data['sadm_no']==session('student'))&&($data['status']=='requested'))
                                         <button class="btn btn-warning" type="submit">Requested</button>
+                                    @elseif(($data['sadm_no']==session('student'))&&($data['status']=='approved'))
+                                        <button class="btn btn-success" type="submit">Approved</button>
                                     @endif
                                 @endif
                             </td>
@@ -44,8 +46,6 @@
                                             <button class="btn btn-danger" type="submit">Book Limit Reached</button>
                                         @elseif($book['quantity']<=0)
                                             <button class="btn btn-danger" type="submit">Unavailable</button>
-                                        @elseif(($student['adm_no']==session('student'))&&($book['status']=='requested'))
-                                            <button class="btn btn-warning" type="submit">Requested</button>
                                         @else
                                             <form action="requestbooks/{{$book['bid']}}">
                                                 <button class="btn btn-primary" type="submit">Request</button>

@@ -18,7 +18,7 @@ class AdminController extends Controller
             return redirect("/");
         }
         else{
-            return "<h3>Username and Password does not match. <br><br><button onclick=\"window.location.href='student_login';\">Back to login</button></h3>";
+            return "<h3>Username and Password does not match. <br><br><button onclick=\"window.location.href='admin_login';\">Back to login</button></h3>";
         }
     }
 

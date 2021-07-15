@@ -38,38 +38,14 @@ class BooksController extends Controller
     function books(){
         $data = Book::select("*")->get();
         $data1=Book::join('requests', 'books.bid', '=', 'requests.rbid')
-        ->where('sadm_no','=',session('student'))
         ->where('status','=','requested')
+        ->orWhere('status','=','approved')
+        ->orderBy('bid')
         ->get();
+        $data1 = $data1->where('sadm_no','=',session('student'));
         $student = Student::where(["adm_no"=>session('student')])->first();
         return view('books',['book'=>$data,'student'=>$student,'data'=>$data1]);
     }
-
-    /*function books(){
-        $data=Book::leftJoin('requests', 'books.bid', '=', 'requests.rbid')
-        ->orderBy('bid', 'ASC')
-        ->get();
-        $data = $data->groupBy('bid');
-        //$data = $data->unique('bid');
-        //->where('requests.sadm_no',session('student'))
-        //->orWhere('requests.sadm_no',null)
-        foreach($data as $item){
-            echo $item;
-            $item1 = $item->where('sadm_no','=',session('student'));
-            echo $item1;
-            echo "<br><br><br><br>";
-            if($item1==null)
-            echo $item;
-            else
-            echo $item1;
-            echo "<br><br><br><br>";
-        }
-        echo $data;
-        return count($data);
-        $student = Student::where(["adm_no"=>session('student')])->first();
-        $num = $student->book_num;
-        return view('books',['book'=>$data,'num'=>$num]);
-    }*/
 
     function requestbooks($bid){
         $req = new bookreq;
@@ -79,18 +55,60 @@ class BooksController extends Controller
         $req->save();
         $data = Book::where(["bid"=>$bid])->first();
         $book = Book::find($data->id);
-        $book->quantity = $data->quantity-1;
         $book->save();
         $sid = Student::where(["adm_no"=>session('student')])->first();
         $student = Student::find($sid->id);
-        $student->book_num = $student->book_num-1;
         if($student->bid1==0)
         $student->bid1 = $bid;
         else if($student->bid2==0)
         $student->bid2 = $bid;
         else
         $student->bid3 = $bid;
+        $student->book_num = $student->book_num - 1;
         $student->save();
         return redirect('mybooks');
+    }
+
+    function requests(){
+        $data=bookreq::join('books', 'books.bid', '=', 'requests.rbid')
+        ->join('students', 'students.adm_no', '=', 'requests.sadm_no')
+        ->where('status','=','requested')
+        ->get();
+        return view('bookrequests',['data'=>$data]);
+    }
+
+    function approve($bid,$adm){
+        $fid = bookreq::where(["rbid"=>$bid,"sadm_no"=>$adm,"status"=>"requested"])->first();
+        $sid = Book::where(["bid"=>$bid])->first();
+        $book = Book::find($sid->id);
+        $req = bookreq::find($fid->id);
+        $req->status = "approved";
+        $req->save();
+        $book->quantity = $book->quantity - 1;
+        $book->save();
+        return redirect('bookrequests');
+    }
+
+    function decline($bid,$adm){
+        $fid = bookreq::where(["rbid"=>$bid,"sadm_no"=>$adm,"status"=>"requested"])->first();
+        $sid = Student::where(["adm_no"=>$adm])->first();
+        $student = Student::find($sid->id);
+        $req = bookreq::find($fid->id);
+        $req->status = "declined";
+        $req->save();
+        if($student->bid1==$bid){
+            $student->bid1 = $student->bid2;
+            $student->bid2 = $student->bid3;
+            $student->bid3 = 0;
+        }
+        else if($student->bid2==$bid){
+            $student->bid2 = $student->bid3;
+            $student->bid3 = 0;
+        }
+        else
+        $student->bid3 = 0;
+        $student->book_num = $student->book_num + 1;
+        $student->save();
+        return redirect('bookrequests');
     }
 }
