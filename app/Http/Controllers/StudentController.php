@@ -35,7 +35,10 @@ class StudentController extends Controller
         $student->adm_no = $req->adm_no;
         $student->password = Hash::make($req->password);
         $student->email = $req->email;
-        $student->book_num = 5;
+        $student->book_num = 3;
+        $student->bid1 = 0;
+        $student->bid2 = 0;
+        $student->bid3 = 0;
         $student->fine = 0;
         $student->save();
         return redirect('student_login');

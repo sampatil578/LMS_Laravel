@@ -16,7 +16,7 @@
                         <td>{{$student['name']}}</td>
                         <td>{{$student['adm_no']}}</td>
                         <td>{{$student['email']}}</td>
-                        <td>{{5-$student['book_num']}}</td>
+                        <td>{{3-$student['book_num']}}</td>
                         <td>{{$student['fine']}}</td>
                     </tr>
                 @endforeach

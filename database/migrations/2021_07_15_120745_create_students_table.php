@@ -20,6 +20,9 @@ class CreateStudentsTable extends Migration
             $table->string('password');
             $table->string('email');
             $table->integer('book_num');
+            $table->integer('bid1');
+            $table->integer('bid2');
+            $table->integer('bid3');
             $table->integer('fine');
             $table->timestamps();
         });
