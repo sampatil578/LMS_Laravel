@@ -16,7 +16,21 @@
                     <td>Contact</td>
                     <td>{{$data['email']}}</td>
                 </tr>
-        </table>
+                <tr>
+                    <td>Fine</td>
+                    <td>
+                        {{$data['fine']}}
+                    </td>
+                </tr>
+        </table><br>
+                @if($data['fine']>0 && $data['adm_no']==session('student'))
+                    <form action="{{route('paytm.payment')}}" method="POST">
+                    @csrf
+                        <input type="hidden" name="fine" class="form-control"  value="{{$data['fine']}}">
+                        <input type="hidden" name="adm_no" class="form-control"  value="{{session('student')}}">
+                        <button class="btn btn-primary" type="submit">Pay Fine</button>
+                    </form> 
+                @endif
         </div>
         <div class="col-sm-12">
         <h3>Books Borrowed</h3>

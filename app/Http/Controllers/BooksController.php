@@ -8,6 +8,8 @@ use App\Models\Book;
 use App\Models\bookreq;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use PaytmWallet;
+use Session;
 
 class BooksController extends Controller
 {
@@ -137,6 +139,8 @@ class BooksController extends Controller
         $diff = $req->updated_at->diffInDays($req->created_at);
         if($diff >= 3)
         $diff = $diff - 2;
+        else
+        $diff = 0;
         $diff = 5*$diff;
         $student->fine = $student->fine + $diff;
         if($student->bid1==$bid){
@@ -157,5 +161,49 @@ class BooksController extends Controller
         $book->quantity = $book->quantity + 1;
         $book->save();
         return redirect('bbooks');
+    }
+
+    public function paytmPayment(Request $req)
+    {
+        $a = $req->input();
+        $req->session()->put('fine',$a);
+        $payment = PaytmWallet::with('receive');
+        $payment->prepare([
+          'order' => rand(),
+          'user' => rand(10,1000),
+          'mobile_number' => '123456789',
+          'email' => 'paytmtest@gmail.com',
+          'amount' => $req->fine,
+          'callback_url' => route('paytm.callback'),
+        ]);
+        return $payment->receive();
+    }
+
+    public function paytmCallback()
+    {
+        $transaction = PaytmWallet::with('receive');
+        
+        $response = $transaction->response(); // To get raw response as array
+        //Check out response parameters sent by paytm here -> http://paywithpaytm.com/developer/paytm_api_doc?target=interpreting-response-sent-by-paytm
+        
+        if($transaction->isSuccessful()){
+            $a = session('fine');
+            Session::forget('fine');
+            $data = Student::select("*")->where("adm_no",'=', $a['adm_no'])->get()->first();
+            $student = Student::find($data->id);
+            $student->fine = 0;
+            $student->save();
+            return redirect('books');
+        }else if($transaction->isFailed()){
+          //Transaction Failed
+          return view('fail');
+        }else if($transaction->isOpen()){
+          //Transaction Open/Processing
+          return view('fail');
+        }
+        $transaction->getResponseMessage(); //Get Response Message If Available
+        //get important parameters via public methods
+        $transaction->getOrderId(); // Get order id
+        $transaction->getTransactionId(); // Get transaction id
     }
 }

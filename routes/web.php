@@ -38,6 +38,8 @@ Route::get("/profile/{adm}",[StudentController::class,'profile']);
 Route::get("/approverequests/{bid}_{adm}",[BooksController::class,'approve']);
 Route::get("/declinerequests/{bid}_{adm}",[BooksController::class,'decline']);
 Route::get("/returnbook/{bid}_{adm}",[BooksController::class,'returnbook']);
+Route::post('paytm-payment',[BooksController::Class,'paytmPayment'])->name('paytm.payment');
+Route::post('paytm-callback',[BooksController::Class,'paytmCallback'])->name('paytm.callback');
 
 Route::get("/logout",function(){
     if(session('student')){
