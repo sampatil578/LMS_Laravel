@@ -13,7 +13,7 @@
                 </tr>
                 @foreach($student as $student)
                     <tr>
-                        <td>{{$student['name']}}</td>
+                        <td><a href="profile/{{$student['adm_no']}}">{{$student['name']}}</a></td>
                         <td>{{$student['adm_no']}}</td>
                         <td>{{$student['email']}}</td>
                         <td>{{3-$student['book_num']}}</td>

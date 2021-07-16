@@ -16,7 +16,7 @@
                     <tr>
                         <td>{{$data['bid']}}</td>
                         <td>{{$data['bookname']}}</td>
-                        <td>{{$data['name']}}</td>
+                        <td><a href="profile/{{$data['adm_no']}}">{{$data['name']}}</a></td>
                         <td>{{$data['adm_no']}}</td>
                         <td>{{$data['email']}}</td>
                         <td>

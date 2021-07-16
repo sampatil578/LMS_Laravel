@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\Book;
+use App\Models\bookreq;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
@@ -47,5 +49,15 @@ class StudentController extends Controller
     function students(){
         $data = Student::select("*")->get();
         return view('students',['student'=>$data]);
+    }
+
+    function profile($adm){
+        $data = Student::where(["adm_no"=>$adm])->first();
+        $book=bookreq::join('books', 'books.bid', '=', 'requests.rbid')
+        ->where('status','=','approved')
+        ->orWhere('status','=','requested')
+        ->get();
+        $book = $book->where('sadm_no','=',$adm);
+        return view('profile',['data'=>$data,'book'=>$book]);
     }
 }

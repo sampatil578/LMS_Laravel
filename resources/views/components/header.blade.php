@@ -17,7 +17,7 @@
       @if(@session()->has('student'))
         <li><a href="/books">Books</a></li>
         <li><a href="/mybooks">My Books</a></li>
-        <li><a href="/profile">Profile</a></li>
+        <li><a href="/profile/{{session('student')}}">Profile</a></li>
         <li><a href="/logout">logout</a></li>
       @elseif(@session()->has('admin'))
         <li><a href="/books">Books</a></li>
