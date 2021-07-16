@@ -37,6 +37,7 @@ Route::get("/requestbooks/{bid}",[BooksController::class,'requestbooks']);
 Route::get("/profile/{adm}",[StudentController::class,'profile']);
 Route::get("/approverequests/{bid}_{adm}",[BooksController::class,'approve']);
 Route::get("/declinerequests/{bid}_{adm}",[BooksController::class,'decline']);
+Route::get("/returnbook/{bid}_{adm}",[BooksController::class,'returnbook']);
 
 Route::get("/logout",function(){
     if(session('student')){

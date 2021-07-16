@@ -126,4 +126,36 @@ class BooksController extends Controller
         $student->save();
         return redirect('bookrequests');
     }
+
+    function returnbook($bid,$adm){
+        $fid = bookreq::where(["rbid"=>$bid,"sadm_no"=>$adm,"status"=>"approved"])->first();
+        $sid = Student::where(["adm_no"=>$adm])->first();
+        $student = Student::find($sid->id);
+        $req = bookreq::find($fid->id);
+        $req->status = "returned";
+        $req->save();
+        $diff = $req->updated_at->diffInDays($req->created_at);
+        if($diff >= 3)
+        $diff = $diff - 2;
+        $diff = 5*$diff;
+        $student->fine = $student->fine + $diff;
+        if($student->bid1==$bid){
+            $student->bid1 = $student->bid2;
+            $student->bid2 = $student->bid3;
+            $student->bid3 = 0;
+        }
+        else if($student->bid2==$bid){
+            $student->bid2 = $student->bid3;
+            $student->bid3 = 0;
+        }
+        else
+        $student->bid3 = 0;
+        $student->book_num = $student->book_num + 1;
+        $student->save();
+        $rid = Book::where(["bid"=>$bid])->first();
+        $book = Book::find($rid->id);
+        $book->quantity = $book->quantity + 1;
+        $book->save();
+        return redirect('bbooks');
+    }
 }
