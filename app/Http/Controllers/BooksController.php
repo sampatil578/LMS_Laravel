@@ -77,6 +77,21 @@ class BooksController extends Controller
         return view('bookrequests',['data'=>$data]);
     }
 
+    function bbooks(){
+        $data=bookreq::join('books', 'books.bid', '=', 'requests.rbid')
+        ->join('students', 'students.adm_no', '=', 'requests.sadm_no')
+        ->where('status','=','approved')
+        ->get();
+        return view('bbooks',['data'=>$data]);
+    }
+
+    function mybooks(){
+        $data=bookreq::join('books', 'books.bid', '=', 'requests.rbid')
+        ->where('sadm_no','=',session('student'))
+        ->get();
+        return view('mybooks',['data'=>$data]);
+    }
+
     function approve($bid,$adm){
         $fid = bookreq::where(["rbid"=>$bid,"sadm_no"=>$adm,"status"=>"requested"])->first();
         $sid = Book::where(["bid"=>$bid])->first();

@@ -15,7 +15,7 @@ class StudentController extends Controller
         $a = $req->input();
         if($user && Hash::check($req->password,$user->password)){
             $req->session()->put('student',$a['adm_no']);
-            return redirect("/");
+            return redirect("/books");
         }
         else{
             return "<h3>Email and Password does not match. <br><br><button onclick=\"window.location.href='student_login';\">Back to login</button></h3>";

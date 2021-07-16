@@ -28,6 +28,8 @@ Route::post("/student_signup",[StudentController::class,'signup']);
 Route::post("/student_login",[StudentController::class,'login']);
 Route::get("/students",[StudentController::class,'students']);
 Route::get("/bookrequests",[BooksController::class,'requests']);
+Route::get("/bbooks",[BooksController::class,'bbooks']);
+Route::get("/mybooks",[BooksController::class,'mybooks']);
 Route::post("/admin_login",[AdminController::class,'login']);
 Route::post("/addadmin",[AdminController::class,'signup']);
 Route::post("/addbooks",[BooksController::class,'addbook']);
